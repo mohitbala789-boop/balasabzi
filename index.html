@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Balasabzi 🥬</title>
+
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="green">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#d4fc79;
+}
+
+/* HEADER */
+
+header{
+background:green;
+padding:12px;
+text-align:center;
+color:white;
+}
+
+header img{
+width:140px;
+height:140px;
+border-radius:20px;
+object-fit:cover;
+border:4px solid yellow;
+background:white;
+}
+
+/* LOGO */
+
+.logo{
+font-size:38px;
+font-weight:bold;
+color:yellow;
+text-shadow:3px 3px red;
+margin-top:8px;
+}
+
+/* SUB */
+
+.sub{
+font-size:22px;
+font-weight:bold;
+color:white;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:500px;
+margin:auto;
+padding:10px;
+}
+
+/* CARD */
+
+.card{
+background:white;
+padding:12px;
+margin-top:15px;
+border-radius:15px;
+box-shadow:0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* INPUT */
+
+input,select,button{
+
+width:100%;
+
+padding:12px;
+
+margin-top:10px;
+
+border-radius:8px;
+
+border:1px solid #ccc;
+
+font-size:16px;
+
+box-sizing:border-box;
+
+}
+
+/* BUTTON */
+
+button{
+background:green;
+color:white;
+border:none;
+font-weight:bold;
+}
+
+/* PRODUCT IMAGE */
+
+.product-img{
+
+width:100%;
+
+height:220px;
+
+/* FULL IMAGE */
+
+object-fit:contain;
+
+background:white;
+
+border-radius:10px;
+
+}
+
+/* NAME */
+
+.name{
+font-size:28px;
+font-weight:bold;
+margin-top:10px;
+}
+
+/* PRICE */
+
+.price{
+font-size:18px;
+margin-top:5px;
+}
+
+/* CART */
+
+.cart-item{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+background:#f2f2f2;
+
+padding:10px;
+
+margin-top:10px;
+
+border-radius:8px;
+
+}
+
+/* REMOVE */
+
+.remove{
+
+background:red;
+
+width:auto;
+
+padding:5px 12px;
+
+font-size:18px;
+
+}
+
+/* TOTAL */
+
+.total{
+
+font-size:30px;
+
+font-weight:bold;
+
+margin-top:15px;
+
+text-align:center;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+<img src="https://i.ibb.co/TxH4Tw22/Screenshot-2026-05-08-13-16-29-20-96b26121e545231a3c569311a54cda96.jpg">
+
+<div class="logo">
+BALASABZI
+</div>
+
+<div class="sub">
+Fresh Vegetables
+</div>
+
+</header>
+
+<!-- MAIN -->
+
+<div class="container">
+
+<!-- CUSTOMER DETAILS -->
+
+<div class="card">
+
+<h2>Customer Details 👤</h2>
+
+<input
+id="cName"
+placeholder="Enter Your Name">
+
+<input
+id="cMobile"
+placeholder="Enter Mobile Number">
+
+<input
+id="location"
+placeholder="Enter Delivery Location">
+
+</div>
+
+<!-- PRODUCTS -->
+
+<div id="productList"></div>
+
+<!-- CART -->
+
+<div class="card">
+
+<h2>🛒 Your Cart</h2>
+
+<div id="cartBox"></div>
+
+<div class="total">
+
+Total ₹<span id="total">0</span>
+
+</div>
+
+<button onclick="placeOrder()">
+
+Place Order 📩
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* PRODUCTS */
+
+let veg = [
+
+{
+name:"Brinjal (A)",
+
+image:"https://i.ibb.co/VYCnFnHm/pexels-shree-clips-b-2156899867-35116491-1.jpg",
+
+price:{
+kg:40,
+half:20,
+quarter:10
+}
+},
+
+{
+name:"Barbati",
+
+image:"https://i.ibb.co/qM01Dv48/IMG-20260508-105722.jpg",
+
+price:{
+kg:60,
+half:30,
+quarter:20
+}
+},
+
+{
+name:"Brinjal (B)",
+
+image:"https://i.ibb.co/3Yk0rYNx/IMG-20260508-104839.jpg",
+
+price:{
+kg:40,
+half:20,
+quarter:10
+}
+},
+
+{
+name:"Karela",
+
+image:"https://i.ibb.co/1GMb32yW/IMG-20260508-110404.jpg",
+
+price:{
+kg:50,
+half:30,
+quarter:20
+}
+}
+
+];
+
+/* CART */
+
+let cart = [];
+
+let total = 0;
+
+/* SHOW PRODUCTS */
+
+function renderProducts(){
+
+productList.innerHTML="";
+
+veg.forEach((v,i)=>{
+
+productList.innerHTML += `
+
+<div class="card">
+
+<img
+class="product-img"
+src="${v.image}">
+
+<div class="name">
+
+${v.name}
+
+</div>
+
+<div class="price">
+
+1 Kg ₹${v.price.kg}
+
+</div>
+
+<div class="price">
+
+500g ₹${v.price.half}
+
+</div>
+
+<div class="price">
+
+250g ₹${v.price.quarter}
+
+</div>
+
+<select id="qty${i}">
+
+<option value="kg">
+
+1 Kg
+
+</option>
+
+<option value="half">
+
+500g
+
+</option>
+
+<option value="quarter">
+
+250g
+
+</option>
+
+</select>
+
+<button onclick="addCart(${i})">
+
+Add To Cart
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* ADD CART */
+
+function addCart(i){
+
+let item = veg[i];
+
+let type =
+document.getElementById("qty"+i).value;
+
+let qty = "";
+
+let price = 0;
+
+if(type==="kg"){
+
+qty="1 Kg";
+
+price=item.price.kg;
+
+}
+
+if(type==="half"){
+
+qty="500g";
+
+price=item.price.half;
+
+}
+
+if(type==="quarter"){
+
+qty="250g";
+
+price=item.price.quarter;
+
+}
+
+cart.push({
+
+name:item.name,
+
+qty:qty,
+
+price:price
+
+});
+
+total += price;
+
+renderCart();
+
+}
+
+/* SHOW CART */
+
+function renderCart(){
+
+cartBox.innerHTML="";
+
+cart.forEach((i,index)=>{
+
+cartBox.innerHTML += `
+
+<div class="cart-item">
+
+<div>
+
+🥬 ${i.name}
+
+<br>
+
+${i.qty} - ₹${i.price}
+
+</div>
+
+<button
+class="remove"
+onclick="removeItem(${index})">
+
+-
+
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("total")
+.innerText=total;
+
+}
+
+/* REMOVE ITEM */
+
+function removeItem(index){
+
+total -= cart[index].price;
+
+cart.splice(index,1);
+
+renderCart();
+
+}
+
+/* PLACE ORDER */
+
+function placeOrder(){
+
+let name =
+document.getElementById("cName")
+.value.trim();
+
+let mobile =
+document.getElementById("cMobile")
+.value.trim();
+
+let location =
+document.getElementById("location")
+.value.trim();
+
+/* VALIDATION */
+
+if(name===""){
+
+alert("❌ Enter Your Name");
+
+return;
+
+}
+
+if(mobile===""){
+
+alert("❌ Enter Mobile Number");
+
+return;
+
+}
+
+if(mobile.length < 10){
+
+alert("❌ Enter Valid Mobile Number");
+
+return;
+
+}
+
+if(location===""){
+
+alert("❌ Enter Delivery Location");
+
+return;
+
+}
+
+if(cart.length===0){
+
+alert("❌ Cart Empty");
+
+return;
+
+}
+
+/* WHATSAPP MESSAGE */
+
+let msg =
+"🛒 BALASABZI ORDER\n\n";
+
+msg +=
+"👤 Name: "+name+"\n";
+
+msg +=
+"📱 Mobile: "+mobile+"\n";
+
+msg +=
+"📍 Location: "+location+"\n\n";
+
+msg +=
+"🧺 ITEMS:\n";
+
+cart.forEach(i=>{
+
+msg +=
+"🥬 "+i.name+
+" ("+i.qty+") - ₹"+i.price+"\n";
+
+});
+
+msg +=
+"\n💰 Total ₹"+total;
+
+/* OPEN WHATSAPP */
+
+window.open(
+
+"https://wa.me/919899540448?text="
++encodeURIComponent(msg)
+
+);
+
+}
+
+/* START */
+
+renderProducts();
+
+/* PWA */
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker
+.register("./service-worker.js");
+
+}
+
+</script>
+
+</body>
+</html>
