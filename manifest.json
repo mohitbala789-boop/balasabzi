@@ -1,0 +1,20 @@
+{
+  "name": "Balasabzi",
+  "short_name": "Balasabzi",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a8f08",
+  "theme_color": "#0a8f08",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/TxH4Tw22/Screenshot-2026-05-08-13-16-29-20-96b26121e545231a3c569311a54cda96.jpg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.ibb.co/TxH4Tw22/Screenshot-2026-05-08-13-16-29-20-96b26121e545231a3c569311a54cda96.jpg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
